@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ODA SBS - Cyber Enhanced</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .glow {
+      text-shadow: 0 0 10px #00ffe1, 0 0 20px #00ffe1, 0 0 30px #00ffe1;
+    }
+
+    .glass {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .gradient-border {
+      border-image: linear-gradient(45deg, #00ffe1, #ff00e1) 1;
+    }
+
+    .animated-bg {
+      background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364);
+      background-size: 400% 400%;
+      animation: gradient 10s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<body class="text-green-300 animated-bg min-h-screen">
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-4 bg-black/70 glass sticky top-0 z-50">
+    <div class="flex items-center space-x-4">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="w-12 h-12 rounded-full border-2 border-cyan-400" alt="Logo"/>
+      <h1 class="text-2xl glow text-cyan-400 font-bold">ODA SBS</h1>
+    </div>
+    <nav class="hidden md:flex space-x-4">
+      <a href="home.html" class="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold transition duration-300 shadow-md">Home</a>
+      <a href="comment.html" class="px-4 py-2 rounded-lg bg-pink-600 hover:bg-pink-500 text-white font-semibold transition duration-300 shadow-md">Comment</a>
+    </nav>
+    <div id="menuBtn" class="md:hidden text-white text-3xl cursor-pointer">☰</div>
+  </header>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="fixed top-0 left-0 h-full w-64 glass text-white transform -translate-x-full transition-transform duration-300 z-50 p-6">
+    <a href="home.html" class="block mb-4 text-lg hover:text-cyan-300">Home</a>
+    <a href="comment.html" class="block mb-4 text-lg hover:text-pink-300">Comment</a>
+    <a href="contact.html" class="block mb-4 text-lg hover:text-pink-300">DEVELOPER</a>
+  </div>
+
+  <!-- Main -->
+  <main class="px-6 py-10 space-y-10">
+    <section class="p-6 glass rounded-xl border gradient-border shadow-xl">
+      <h2 class="text-2xl text-cyan-300 font-bold mb-4">About ODA Boarding School</h2>
+      <p class="text-green-200 leading-loose mb-4">
+        To improve the current generation life and to pave the way for the future, education has exceptional role...
+        ODA has opened Boarding School, allocating huge budget and working towards raising future competent, committed, responsible leaders.
+      </p>
+      <img src="image1.jpg" alt="About ODA" class="rounded-lg w-full hover:scale-105 transition duration-300 shadow-lg"/>
+    </section>
+
+    <section class="p-6 glass rounded-xl border gradient-border shadow-xl">
+      <h2 class="text-2xl text-pink-300 font-bold mb-4">Overview of ODA Boarding School</h2>
+      <p class="text-green-200 leading-loose mb-4">
+        Boarding school is an institution where children live within premises while being given formal instruction...
+        The schools in Adama and Bishoftu offer full-service quality education with committed teachers.
+      </p>
+      <img src="image2.jpg" alt="Overview of ODA" class="rounded-lg w-full hover:scale-105 transition duration-300 shadow-lg"/>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-10 bg-black/80 glass text-white py-10 px-6 border-t-4 border-cyan-400 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <h3 class="text-lg text-cyan-300 font-semibold mb-2">Contact Us</h3>
+      <p>Email: </p>
+      <p>Phone: +1234567890</p>
+    </div>
+    <div>
+      <h3 class="text-lg text-pink-300 font-semibold mb-2">Quick Links</h3>
+      <ul class="space-y-1">
+        <li><a href="home.html" class="hover:text-cyan-300">Home</a></li>
+        <li><a href="contact.html" class="hover:text-pink-300">DEVELOPER</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    menuBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+    });
+  </script>
+</body>
+</html>

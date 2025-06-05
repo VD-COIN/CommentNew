@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Group Comment Submission</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white min-h-screen font-mono">
+
+<a href="home.html" class="fixed top-4 left-4 text-lime-400 text-3xl bg-gray-800 p-2 rounded-full shadow-lg hover:bg-gray-700 transition">&#8592;</a>
+
+<div class="max-w-2xl mx-auto mt-20 p-6 bg-black/60 border border-lime-500 rounded-2xl shadow-xl backdrop-blur-sm">
+  <h1 class="text-3xl text-lime-400 font-bold text-center mb-8 tracking-wide">💬 Submit a Comment</h1>
+
+  <!-- Service Selection -->
+  <label class="block text-lime-300 font-semibold mb-2">Select Services:</label>
+  <div class="flex flex-wrap gap-4 mb-6">
+    <label class="flex items-center gap-2 px-3 py-2 bg-gray-800 border border-lime-500 rounded-lg cursor-pointer hover:bg-gray-700">
+      <input type="checkbox" name="service" value="Administrative" class="accent-lime-500" /> Administrative
+    </label>
+    <label class="flex items-center gap-2 px-3 py-2 bg-gray-800 border border-lime-500 rounded-lg cursor-pointer hover:bg-gray-700">
+      <input type="checkbox" name="service" value="Student Service" class="accent-lime-500" /> Student Service
+    </label>
+    <label class="flex items-center gap-2 px-3 py-2 bg-gray-800 border border-lime-500 rounded-lg cursor-pointer hover:bg-gray-700">
+      <input type="checkbox" name="service" value="Meal Service" class="accent-lime-500" /> Meal Service
+    </label>
+    <label class="flex items-center gap-2 px-3 py-2 bg-gray-800 border border-lime-500 rounded-lg cursor-pointer hover:bg-gray-700">
+      <input type="checkbox" name="service" value="Dormitory" class="accent-lime-500" /> Dormitory
+    </label>
+  </div>
+
+  <!-- Teacher Fields -->
+  <div id="teacherFields" class="space-y-4 mb-6">
+    <label class="block text-lime-300 font-semibold">Select Grade:</label>
+    <select id="teacherCategory" class="w-full bg-gray-900 border border-lime-500 text-white rounded-lg px-4 py-2">
+      <option value="" disabled selected>Select a grade</option>
+      <option value="Grade 9">Grade 9</option>
+      <option value="Grade 10">Grade 10</option>
+      <option value="Grade 11">Grade 11</option>
+    </select>
+
+    <label class="block text-lime-300 font-semibold">Select Teacher:</label>
+    <select id="teacherName" class="w-full bg-gray-900 border border-lime-500 text-white rounded-lg px-4 py-2">
+      <option value="" disabled selected>Select a teacher</option>
+    </select>
+
+    <label class="block text-lime-300 font-semibold">Enter Section:</label>
+    <input type="text" id="section" placeholder="Enter section" class="w-full bg-gray-900 border border-lime-500 text-white rounded-lg px-4 py-2" />
+  </div>
+
+  <!-- Comment Box -->
+  <label class="block text-lime-300 font-semibold mb-2">Write Your Comment:</label>
+  <textarea id="comment" rows="4" placeholder="Enter your comment..." class="w-full bg-gray-900 border border-lime-500 text-white rounded-lg px-4 py-2 mb-6"></textarea>
+
+  <!-- Submit Button -->
+  <button id="sendBtn" class="w-full py-3 bg-lime-500 hover:bg-lime-400 text-black font-semibold text-lg rounded-lg transition">Send</button>
+</div>
+
+<!-- Success Modal -->
+<div class="fixed inset-0 flex items-center justify-center bg-black/80 hidden" id="successModal">
+  <div class="bg-gray-900 p-6 rounded-xl border border-lime-500 text-center space-y-4">
+    <h2 class="text-2xl text-lime-400 font-bold">✅ Comment Sent!</h2>
+    <p>Your comment has been successfully submitted.</p>
+    <button onclick="closeModal('successModal')" class="mt-2 px-6 py-2 bg-lime-500 text-black rounded hover:bg-lime-400 transition">Close</button>
+  </div>
+</div>
+
+<!-- Error Modal -->
+<div class="fixed inset-0 flex items-center justify-center bg-black/80 hidden" id="errorModal">
+  <div class="bg-gray-900 p-6 rounded-xl border border-red-500 text-center space-y-4">
+    <h2 class="text-2xl text-red-400 font-bold">⚠️ Error</h2>
+    <p id="errorText">Please fill in all fields.</p>
+    <button onclick="closeModal('errorModal')" class="mt-2 px-6 py-2 bg-red-500 text-white rounded hover:bg-red-400 transition">Close</button>
+  </div>
+</div>
+
+<script>
+  const badWords = ["badword1", "badword2", "stupid", "idiot", "hate", "fuck", "sex", "donkey", "harre"];
+  const teacherOptions = {
+    "Grade 9": ["Mathematics", "Physics", "English", "Chemistry", "History", "Geography", "Citizenship", "Economics", "ICT", "Amharic", "Biology", "HPE", "AreaStudy", "AfanOromo"],
+    "Grade 10": ["Mathematics", "Physics", "English", "Chemistry", "History", "Geography", "Citizenship", "Economics", "ICT", "Amharic", "Biology", "HPE", "AreaStudy", "AfanOromo"],
+    "Grade 11": ["English", "History", "Geography", "Economics", "ICT", "AfanOromo"]
+  };
+  const groupMap = {
+    "Administrative": "@serutitjdfkfnjdjd",
+    "Student Service": "@studentServiceGroup",
+    "Meal Service": "@mealServiceGroup",
+    "Dormitory": "@dormitoryGroup",
+      
+  "Grade 9 Mathematics Teacher": "@math9group",
+  "Grade 9 Physics Teacher": "@math10group",
+  "Grade 9 English Teacher": "@ict11group",
+  "Grade 9 Chemistry Teacher": "@math9group",
+  "Grade 9 History Teacher": "@math10group",
+  "Grade 9 Geography Teacher": "@ict11group",
+  "Grade 9 Citizenship Teacher": "@math9group",
+  "Grade 9 Economics Teacher": "@math10group",
+  "Grade 9 ICT Teacher": "@ict11group",
+  "Grade 9 Amharic Teacher": "@math9group",
+  "Grade 9 Biology Teacher": "@math10group",
+  "Grade 9 HPE Teacher": "@ict11group",
+  "Grade 9 AreaStudy Teacher": "@math9group",
+  "Grade 9 AfanOromo Teacher": "@math10group",  
+  "Grade 10 Mathematics Teacher": "@math9group",
+  "Grade 10 Physics Teacher": "@math10group",
+  "Grade 10 English Teacher": "@ict11group",
+  "Grade 10 Chemistry Teacher": "@math9group",
+  "Grade 10 History Teacher": "@math10group",
+  "Grade 10 Geography Teacher": "@ict11group",
+  "Grade 10 Citizenship Teacher": "@math9group",
+  "Grade 10 Economics Teacher": "@math10group",
+  "Grade 10 ICT Teacher": "@ict11groupfrt",
+  "Grade 10 Amharic Teacher": "@math9group",
+  "Grade 10 Biology Teacher": "@math10group",
+  "Grade 10 HPE Teacher": "@ict11group",
+  "Grade 10 AreaStudy Teacher": "@math9group",
+  "Grade 10 AfanOromo Teacher": "@math10group",
+  
+  "Grade 11 Mathematics Teacher": "@math9group",
+  "Grade 11 Physics Teacher": "@math10group",
+  "Grade 11 English Teacher": "@ict11group",
+  "Grade 11 Chemistry Teacher": "@math9group",
+  "Grade 11 History Teacher": "@math10group",
+  "Grade 11 Geography Teacher": "@ict11group"
+};
+
+  document.getElementById('teacherCategory').addEventListener('change', function () {
+    const grade = this.value;
+    const teacherSelect = document.getElementById('teacherName');
+    teacherSelect.innerHTML = '<option value="" disabled selected>Select a teacher</option>';
+    if (teacherOptions[grade]) {
+      teacherOptions[grade].forEach(subject => {
+        const option = document.createElement('option');
+        option.value = `${grade} ${subject} Teacher`;
+        option.textContent = `${grade} ${subject} Teacher`;
+        teacherSelect.appendChild(option);
+      });
+    }
+  });
+
+  document.querySelectorAll('input[name="service"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const selected = [...document.querySelectorAll('input[name="service"]:checked')].map(c => c.value);
+      const showTeacher = !["Administrative", "Meal Service", "Dormitory", "Student Service"].some(s => selected.includes(s));
+      document.getElementById('teacherFields').style.display = showTeacher ? 'block' : 'none';
+    });
+  });
+
+  function containsBadWords(text) {
+    return badWords.some(word => text.toLowerCase().includes(word));
+  }
+
+  function openModal(id, msg = '') {
+    document.getElementById(id).classList.remove('hidden');
+    if (msg) document.getElementById("errorText").innerText = msg;
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+  }
+
+  document.getElementById('sendBtn').addEventListener('click', function () {
+    const services = [...document.querySelectorAll('input[name="service"]:checked')].map(cb => cb.value);
+    const teacher = document.getElementById('teacherName').value;
+    const section = document.getElementById('section').value.trim();
+    const comment = document.getElementById('comment').value.trim();
+    const teacherVisible = document.getElementById('teacherFields').style.display !== 'none';
+
+    if (!comment || (teacherVisible && (!teacher || !section))) {
+      openModal('errorModal', "Please fill in all required fields.");
+      return;
+    }
+
+    if (containsBadWords(comment)) {
+      openModal('errorModal', "Unethical words are not allowed.");
+      return;
+    }
+
+    const botToken = "7545348134:AAHx2bKHCdRLR0FoUpLSXM7V-vlTUCtvlbI"; // Replace with your real bot token
+    let chatIds = [];
+
+    services.forEach(service => {
+      if (groupMap[service]) chatIds.push(groupMap[service]);
+    });
+
+    if (groupMap[teacher]) chatIds.push(groupMap[teacher]);
+
+    const message = `Services: ${services.join(', ')}\n${teacherVisible ? `Teacher: ${teacher}\nSection: ${section}\n` : ''}Comment: ${comment}`;
+
+    chatIds.forEach(chatId => {
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: chatId, text: message })
+      });
+    });
+
+    openModal('successModal');
+  });
+</script>
+</body>
+</html>
